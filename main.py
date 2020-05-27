@@ -15,8 +15,10 @@ def hello(ignore=''):
 		'method': request.method,
 		'path': request.path,
 		'query': request.query_string.decode(),
-		'queryParams': request.args.to_dict(flat=False),
-		'formParams': request.form.to_dict(flat=False),
+		'queryParams': request.args,
+		'queryParamsAll': request.args.to_dict(flat=False),
+		'formParams': request.form,
+		'formParamsAll': request.form.to_dict(flat=False),
 		'headers': dict(request.headers),
 	}
 
