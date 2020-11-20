@@ -9,6 +9,7 @@ app.url_map.add(Rule('/<path:ignore>', endpoint='index'))
 
 @app.endpoint('index')
 def hello(ignore=''):
+	status = request.args.get('status', None)
 	return {
 		'body': make_body(), # must be before it gets processed
 		'url': request.url,
@@ -20,7 +21,7 @@ def hello(ignore=''):
 		'formParams': request.form,
 		'formParamsAll': request.form.to_dict(flat=False),
 		'headers': dict(request.headers),
-	}
+	}, status
 
 
 def make_body():
