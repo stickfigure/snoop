@@ -4,12 +4,21 @@ from werkzeug.routing import Rule
 # If `entrypoint` is not defined in app.yaml, App Engine will look for an app called `app` in `main.py`.
 app = Flask(__name__)
 app.url_map.add(Rule('/', endpoint='index'))
+app.url_map.add(Rule('/204', endpoint='no_content'))
 app.url_map.add(Rule('/<path:ignore>', endpoint='index'))
 
+
+@app.endpoint('no_content')
+def no_content():
+	return '', 204
 
 @app.endpoint('index')
 def hello(ignore=''):
 	status = request.args.get('status', None)
+
+	for header in request.headers:
+		print(f"{header}")
+
 	return {
 		'body': make_body(), # must be before it gets processed
 		'url': request.url,
