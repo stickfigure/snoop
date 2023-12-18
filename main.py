@@ -1,16 +1,29 @@
-from flask import Flask, request
+from flask import Flask, request, redirect
 from werkzeug.routing import Rule
 
 # If `entrypoint` is not defined in app.yaml, App Engine will look for an app called `app` in `main.py`.
 app = Flask(__name__)
 app.url_map.add(Rule('/', endpoint='index'))
 app.url_map.add(Rule('/204', endpoint='no_content'))
+app.url_map.add(Rule('/301', endpoint='redirect301'))
+app.url_map.add(Rule('/302', endpoint='redirect302'))
 app.url_map.add(Rule('/<path:ignore>', endpoint='index'))
+
+
+@app.endpoint('redirect301')
+def redir301():
+	return redirect('/destination', 301)
+
+
+@app.endpoint('redirect302')
+def redir301():
+	return redirect('/destination', 302)
 
 
 @app.endpoint('no_content')
 def no_content():
 	return '', 204
+
 
 @app.endpoint('index')
 def hello(ignore=''):
